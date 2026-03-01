@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>شاشة أوقات الصلاة</title>
+<link rel="stylesheet" href="css/main.css">
+</head>
+<body class="anti-burn-active">
+
+<!-- ══ Iqama Overlay ══ -->
+<div class="iqama-overlay" id="iqamaOverlay">
+  <div class="iqama-title" id="iqamaTitle">إقامة صلاة الفجر</div>
+  <div class="iqama-count" id="iqamaCount">10</div>
+  <div class="iqama-sub">ثوانٍ على إقامة الصلاة</div>
+</div>
+
+<!-- ══ Main Screen ══ -->
+<div class="screen" id="mainScreen">
+
+  <!-- Header -->
+  <header class="header">
+    <div class="header-right">
+      <div class="minaret-logo">
+        <svg viewBox="0 0 52 70" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="4" y="62" width="44" height="6" rx="2" fill="var(--gold)" opacity="0.9"/>
+          <rect x="16" y="30" width="20" height="34" rx="2" fill="var(--gold)" opacity="0.85"/>
+          <rect x="12" y="28" width="28" height="5" rx="1.5" fill="var(--gold)" opacity="0.9"/>
+          <rect x="19" y="16" width="14" height="16" rx="2" fill="var(--gold)" opacity="0.8"/>
+          <rect x="14" y="14" width="24" height="4" rx="1.5" fill="var(--gold)" opacity="0.9"/>
+          <rect x="22" y="7" width="8" height="10" rx="1.5" fill="var(--gold)" opacity="0.85"/>
+          <ellipse cx="26" cy="5" rx="5" ry="3" fill="var(--gold)" opacity="0.7"/>
+          <path d="M23 3 Q26 0 29 3 Q26.5 5.5 23 3Z" fill="var(--bg)"/>
+          <circle cx="29.5" cy="2" r="1" fill="var(--gold)"/>
+          <!-- Windows -->
+          <rect x="22" y="20" width="4" height="5" rx="1" fill="var(--bg)" opacity="0.5"/>
+          <rect x="26.5" y="20" width="4" height="5" rx="1" fill="var(--bg)" opacity="0.5"/>
+          <rect x="22" y="37" width="8" height="7" rx="1.5" fill="var(--bg)" opacity="0.4"/>
+          <path d="M20 64 L20 56 Q26 50 32 56 L32 64Z" fill="var(--bg)" opacity="0.35"/>
+        </svg>
+      </div>
+      <div class="mosque-name">
+        <div class="main" id="mosqueName">مسجد النور</div>
+        <div class="sub" id="mosqueSubName">جامع النور الإسلامي</div>
+      </div>
+    </div>
+
+    <div class="header-center">
+      <div class="hijri-date"    id="hijriDate">جارٍ التحميل...</div>
+      <div class="gregorian-date" id="gregorianDate"></div>
+    </div>
+
+    <div class="header-left">
+      <div class="clock-wrap">
+        <div class="clock" id="clockTime" style="direction:ltr;">00:00</div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Body -->
+  <div class="main-body" id="mainBody">
+
+    <!-- Night Mode: Big Clock -->
+    <div class="night-clock" id="nightClock">
+      <div class="night-clock-time" id="nightClockTime">00:00</div>
+      <div class="night-clock-sub">سُبحانَ اللهِ وبِحمدِهِ ✦ سُبحانَ اللهِ العظيم</div>
+    </div>
+
+    <!-- Next Prayer Widget -->
+    <div class="next-prayer-widget" id="nextPrayerWidget">
+      <div>
+        <div class="next-prayer-label">الصلاة القادمة</div>
+        <div class="next-prayer-name" id="nextPrayerName">—</div>
+        <div class="next-prayer-time" id="nextPrayerTime"></div>
+        <div style="font-size:clamp(11px,1.5vw,16px);color:var(--text2);margin-top:4px;" id="nextIqamaTime"></div>
+      </div>
+      <div>
+        <div class="countdown-label">الوقت المتبقي للأذان</div>
+        <div class="countdown-value" id="countdownValue">00:00:00</div>
+      </div>
+    </div>
+
+    <!-- Prayer Table -->
+    <div class="prayer-section" id="prayerSection">
+      <div class="prayer-table-header">
+        <span>الصلاة</span>
+        <span>الأذان</span>
+        <span>الإقامة</span>
+      </div>
+      <div class="prayer-table" id="prayerTable"></div>
+    </div>
+
+  </div>
+
+  <!-- Ticker -->
+  <div class="ticker-bar" id="tickerBar">
+    <div class="ticker-inner">
+      <span class="ticker-text" id="tickerText">🕌</span>
+      <span class="ticker-sep">✦</span>
+      <span class="ticker-text" id="tickerText2">🕌</span>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-text" id="footerRight">اللهم صل وسلم على نبينا محمد ﷺ</div>
+    <div class="footer-text" id="footerCenter">السلام عليكم ورحمة الله وبركاته</div>
+    <div class="footer-text" id="footerLeft">حفظكم الله ورعاكم</div>
+  </footer>
+
+</div>
+
+<script src="js/display.js"></script>
+</body>
+</html>
