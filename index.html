@@ -92,6 +92,27 @@
 
   </div>
 
+  <!-- شريط تنبيه الأذان / الإقامة -->
+  <div class="adhan-alert-bar" id="adhanAlertBar">
+    <span class="alert-icon" id="alertIcon">🕌</span>
+    <span class="alert-text" id="alertText">باقي على الأذان القادم</span>
+    <div class="alert-counter" id="alertCounter">05:00</div>
+  </div>
+
+  <!-- شريط الأذكار بعد الصلاة -->
+  <div class="adhkar-bar" id="adhkarBar">
+    <div class="adhkar-bar-header">
+      <div class="adhkar-bar-title">✦ أذكار بعد الصلاة</div>
+      <div class="adhkar-bar-progress" id="adhkarProgress"></div>
+    </div>
+    <div class="adhkar-bar-body">
+      <div class="adhkar-text" id="adhkarText"></div>
+    </div>
+    <div class="adhkar-progress-line">
+      <div class="adhkar-progress-fill" id="adhkarProgressFill"></div>
+    </div>
+  </div>
+
   <!-- Ticker -->
   <div class="ticker-bar" id="tickerBar">
     <div class="ticker-inner">
@@ -110,6 +131,7 @@
 
 </div>
 
+<script src="assets/adhkar.js"></script>
 <script src="js/display.js"></script>
 </body>
 </html>
