@@ -1,1 +1,321 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>لوحة تحكم المسجد</title>
+<link rel="stylesheet" href="../css/admin.css">
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+</head>
+<body>
 
+<!-- ══ LOGIN ══ -->
+<div class="login-screen" id="loginScreen">
+  <div class="login-box">
+    <div class="login-logo">
+      <svg viewBox="0 0 52 70" fill="none">
+        <rect x="4" y="62" width="44" height="6" rx="2" fill="#c9a84c" opacity="0.9"/>
+        <rect x="16" y="30" width="20" height="34" rx="2" fill="#c9a84c" opacity="0.85"/>
+        <rect x="12" y="28" width="28" height="5" rx="1.5" fill="#c9a84c"/>
+        <rect x="19" y="16" width="14" height="16" rx="2" fill="#c9a84c" opacity="0.8"/>
+        <rect x="14" y="14" width="24" height="4" rx="1.5" fill="#c9a84c"/>
+        <rect x="22" y="7" width="8" height="10" rx="1.5" fill="#c9a84c" opacity="0.85"/>
+        <ellipse cx="26" cy="5" rx="5" ry="3" fill="#c9a84c" opacity="0.7"/>
+      </svg>
+    </div>
+    <div class="login-title">لوحة تحكم المسجد</div>
+    <div class="login-sub">أدخل كلمة المرور للمتابعة</div>
+    <div class="login-error" id="loginError">كلمة المرور غير صحيحة</div>
+    <label>كلمة المرور</label>
+    <input type="password" id="loginPass" placeholder="••••••••" autocomplete="off">
+    <br><br>
+    <button class="btn btn-primary btn-full" id="loginBtn">دخول</button>
+  </div>
+</div>
+
+<!-- ══ APP ══ -->
+<div class="app" id="app">
+
+  <!-- Topbar -->
+  <div class="topbar">
+    <div class="topbar-brand">
+      <svg viewBox="0 0 52 70" fill="none" width="28" height="36">
+        <rect x="4" y="62" width="44" height="6" rx="2" fill="#c9a84c"/>
+        <rect x="16" y="30" width="20" height="34" rx="2" fill="#c9a84c" opacity="0.85"/>
+        <rect x="12" y="28" width="28" height="5" rx="1.5" fill="#c9a84c"/>
+        <rect x="19" y="16" width="14" height="16" rx="2" fill="#c9a84c" opacity="0.8"/>
+        <rect x="14" y="14" width="24" height="4" rx="1.5" fill="#c9a84c"/>
+        <rect x="22" y="7" width="8" height="10" rx="1.5" fill="#c9a84c" opacity="0.85"/>
+      </svg>
+      <div>
+        <div class="brand-name">لوحة تحكم المسجد</div>
+        <div class="brand-sub">إدارة شاشة أوقات الصلاة</div>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;">
+      <span class="sync-badge synced" id="syncBadge"><span class="dot"></span>متزامن ✓</span>
+      <button class="btn btn-secondary btn-sm" id="reloadBtn">🔄 تحديث</button>
+      <button class="btn btn-primary" id="saveBtn">💾 حفظ ونشر</button>
+    </div>
+  </div>
+
+  <div class="body-wrap">
+
+    <!-- Sidebar -->
+    <nav class="sidebar">
+      <div class="nav-group-title">القائمة</div>
+      <div class="nav-item active" data-panel="prayers">
+        <span class="nav-icon">🕌</span> أوقات الصلاة
+      </div>
+      <div class="nav-item" data-panel="display">
+        <span class="nav-icon">📺</span> إعدادات العرض
+      </div>
+      <div class="nav-item" data-panel="night">
+        <span class="nav-icon">🌙</span> وضع السكون
+      </div>
+      <div class="nav-item" data-panel="ticker">
+        <span class="nav-icon">📢</span> الشريط الإخباري
+      </div>
+      <div class="nav-item" data-panel="footer">
+        <span class="nav-icon">📝</span> تذييل الصفحة
+      </div>
+      <div class="nav-group-title">النظام</div>
+      <div class="nav-item" data-panel="settings">
+        <span class="nav-icon">⚙️</span> إعدادات GitHub
+      </div>
+    </nav>
+
+    <!-- Content -->
+    <main class="content">
+
+      <!-- ═══ Panel: Prayer Times ═══ -->
+      <div class="panel active" id="panel-prayers">
+        <div class="info-box">
+          📅 أوقات الأذان تُحمَّل تلقائياً من ملف <strong>dehri.json</strong> حسب تاريخ اليوم.
+          يمكنك إضافة أو تنقيص دقائق لكل صلاة. الإقامة هي عدد الدقائق بعد الأذان.
+        </div>
+
+        <div class="card">
+          <div class="card-title"><span class="icon">🕐</span> تعديل الأوقات والإقامات</div>
+
+          <div style="display:grid;grid-template-columns:100px 1fr 50px 1fr;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);margin-bottom:8px;">
+            <div style="font-size:11px;color:var(--text2);">الصلاة</div>
+            <div style="font-size:11px;color:var(--text2);text-align:center;">تعديل الأذان (دقائق)</div>
+            <div></div>
+            <div style="font-size:11px;color:var(--text2);text-align:center;">الإقامة بعد الأذان (دقائق)</div>
+          </div>
+
+          <!-- Fajr -->
+          <div class="prayer-edit-row">
+            <div class="prayer-edit-name">الفجر</div>
+            <div class="adj-wrap">
+              <button class="adj-btn" data-target="adj_fajr" data-delta="-1">−</button>
+              <input class="adj-val" type="number" id="adj_fajr" value="0">
+              <button class="adj-btn" data-target="adj_fajr" data-delta="1">+</button>
+              <span class="adj-label">د</span>
+            </div>
+            <div></div>
+            <div class="adj-wrap">
+              <button class="adj-btn" data-target="iqama_fajr" data-delta="-1">−</button>
+              <input class="adj-val" type="number" id="iqama_fajr" value="20">
+              <button class="adj-btn" data-target="iqama_fajr" data-delta="1">+</button>
+              <span class="adj-label">د</span>
+            </div>
+          </div>
+
+          <!-- Sunrise -->
+          <div class="prayer-edit-row">
+            <div class="prayer-edit-name">الشروق</div>
+            <div class="adj-wrap">
+              <button class="adj-btn" data-target="adj_sunrise" data-delta="-1">−</button>
+              <input class="adj-val" type="number" id="adj_sunrise" value="0">
+              <button class="adj-btn" data-target="adj_sunrise" data-delta="1">+</button>
+              <span class="adj-label">د</span>
+            </div>
+            <div></div>
+            <div style="font-size:12px;color:var(--text2);padding-top:4px;">لا إقامة</div>
+          </div>
+
+          <!-- Dhuhr -->
+          <div class="prayer-edit-row">
+            <div class="prayer-edit-name">الظهر</div>
+            <div class="adj-wrap">
+              <button class="adj-btn" data-target="adj_dhuhr" data-delta="-1">−</button>
+              <input class="adj-val" type="number" id="adj_dhuhr" value="0">
+              <button class="adj-btn" data-target="adj_dhuhr" data-delta="1">+</button>
+              <span class="adj-label">د</span>
+            </div>
+            <div></div>
+            <div class="adj-wrap">
+              <button class="adj-btn" data-target="iqama_dhuhr" data-delta="-1">−</button>
+              <input class="adj-val" type="number" id="iqama_dhuhr" value="15">
+              <button class="adj-btn" data-target="iqama_dhuhr" data-delta="1">+</button>
+              <span class="adj-label">د</span>
+            </div>
+          </div>
+
+          <!-- Asr -->
+          <div class="prayer-edit-row">
+            <div class="prayer-edit-name">العصر</div>
+            <div class="adj-wrap">
+              <button class="adj-btn" data-target="adj_asr" data-delta="-1">−</button>
+              <input class="adj-val" type="number" id="adj_asr" value="0">
+              <button class="adj-btn" data-target="adj_asr" data-delta="1">+</button>
+              <span class="adj-label">د</span>
+            </div>
+            <div></div>
+            <div class="adj-wrap">
+              <button class="adj-btn" data-target="iqama_asr" data-delta="-1">−</button>
+              <input class="adj-val" type="number" id="iqama_asr" value="15">
+              <button class="adj-btn" data-target="iqama_asr" data-delta="1">+</button>
+              <span class="adj-label">د</span>
+            </div>
+          </div>
+
+          <!-- Maghrib -->
+          <div class="prayer-edit-row">
+            <div class="prayer-edit-name">المغرب</div>
+            <div class="adj-wrap">
+              <button class="adj-btn" data-target="adj_maghrib" data-delta="-1">−</button>
+              <input class="adj-val" type="number" id="adj_maghrib" value="0">
+              <button class="adj-btn" data-target="adj_maghrib" data-delta="1">+</button>
+              <span class="adj-label">د</span>
+            </div>
+            <div></div>
+            <div class="adj-wrap">
+              <button class="adj-btn" data-target="iqama_maghrib" data-delta="-1">−</button>
+              <input class="adj-val" type="number" id="iqama_maghrib" value="5">
+              <button class="adj-btn" data-target="iqama_maghrib" data-delta="1">+</button>
+              <span class="adj-label">د</span>
+            </div>
+          </div>
+
+          <!-- Isha -->
+          <div class="prayer-edit-row">
+            <div class="prayer-edit-name">العشاء</div>
+            <div class="adj-wrap">
+              <button class="adj-btn" data-target="adj_isha" data-delta="-1">−</button>
+              <input class="adj-val" type="number" id="adj_isha" value="0">
+              <button class="adj-btn" data-target="adj_isha" data-delta="1">+</button>
+              <span class="adj-label">د</span>
+            </div>
+            <div></div>
+            <div class="adj-wrap">
+              <button class="adj-btn" data-target="iqama_isha" data-delta="-1">−</button>
+              <input class="adj-val" type="number" id="iqama_isha" value="15">
+              <button class="adj-btn" data-target="iqama_isha" data-delta="1">+</button>
+              <span class="adj-label">د</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ═══ Panel: Display Settings ═══ -->
+      <div class="panel" id="panel-display">
+        <div class="card">
+          <div class="card-title"><span class="icon">🕌</span> معلومات المسجد</div>
+          <label>اسم المسجد</label>
+          <input type="text" id="mosqueName" placeholder="مسجد النور">
+          <label>الاسم الفرعي</label>
+          <input type="text" id="mosqueSubName" placeholder="جامع النور الإسلامي">
+          <label>المدينة</label>
+          <input type="text" id="city" placeholder="باقة الغربية">
+        </div>
+
+        <div class="card">
+          <div class="card-title"><span class="icon">⚡</span> إعدادات متقدمة</div>
+          <div class="toggle-wrap">
+            <div>
+              <div class="toggle-label">Anti-Burn (منع حرق الشاشة)</div>
+              <div class="toggle-sub">يحرك المحتوى ببضع بكسلات بشكل دوري</div>
+            </div>
+            <label class="toggle">
+              <input type="checkbox" id="antiBurn" checked>
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══ Panel: Night Mode ═══ -->
+      <div class="panel" id="panel-night">
+        <div class="card">
+          <div class="card-title"><span class="icon">🌙</span> وضع السكون الليلي</div>
+          <div class="toggle-wrap">
+            <div>
+              <div class="toggle-label">تفعيل وضع السكون</div>
+              <div class="toggle-sub">يختفي جدول الصلوات وتبقى الساعة فقط</div>
+            </div>
+            <label class="toggle">
+              <input type="checkbox" id="nightEnabled" checked>
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+          <label>التأخير بعد العشاء (بالدقائق)</label>
+          <input type="number" id="nightDelay" value="30" min="0" max="120">
+          <div class="iqama-sub">مثال: 30 = يبدأ وضع السكون بعد 30 دقيقة من أذان العشاء</div>
+        </div>
+      </div>
+
+      <!-- ═══ Panel: Ticker ═══ -->
+      <div class="panel" id="panel-ticker">
+        <div class="card">
+          <div class="card-title"><span class="icon">📢</span> الشريط الإخباري</div>
+          <div class="toggle-wrap">
+            <div>
+              <div class="toggle-label">إظهار الشريط</div>
+            </div>
+            <label class="toggle">
+              <input type="checkbox" id="tickerEnabled" checked>
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+          <label>نص الشريط</label>
+          <textarea id="tickerText" placeholder="أهلاً وسهلاً بكم في مسجد النور..."></textarea>
+        </div>
+      </div>
+
+      <!-- ═══ Panel: Footer ═══ -->
+      <div class="panel" id="panel-footer">
+        <div class="card">
+          <div class="card-title"><span class="icon">📝</span> نصوص التذييل</div>
+          <label>النص الأيمن</label>
+          <input type="text" id="footerRight" placeholder="اللهم صل وسلم على نبينا محمد ﷺ">
+          <label>النص الأوسط</label>
+          <input type="text" id="footerCenter" placeholder="السلام عليكم ورحمة الله وبركاته">
+          <label>النص الأيسر</label>
+          <input type="text" id="footerLeft" placeholder="حفظكم الله ورعاكم">
+        </div>
+      </div>
+
+      <!-- ═══ Panel: GitHub Settings ═══ -->
+      <div class="panel" id="panel-settings">
+        <div class="info-box">
+          ⚙️ هذه الإعدادات تُحفظ في المتصفح فقط (محلياً). يجب تعبئتها في كل جهاز تدخل منه لوحة التحكم.
+          <br><br>
+          <strong>كيفية إنشاء Token:</strong> GitHub → Settings → Developer settings → Personal access tokens → Generate new token (classic) → فعّل صلاحية <code>repo</code>
+        </div>
+        <div class="card">
+          <div class="card-title"><span class="icon">🔗</span> ربط GitHub Repository</div>
+          <label>GitHub Username (Owner)</label>
+          <input type="text" id="ghOwner" placeholder="اسم المستخدم على GitHub">
+          <label>Repository Name</label>
+          <input type="text" id="ghRepo" placeholder="masjid-display">
+          <label>Personal Access Token</label>
+          <input type="password" id="ghToken" placeholder="ghp_xxxxxxxxxxxx" autocomplete="off">
+          <br><br>
+          <button class="btn btn-primary" id="saveGHBtn">💾 حفظ إعدادات GitHub</button>
+        </div>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<!-- Status Bar -->
+<div class="status-bar" id="statusBar"></div>
+
+<script src="../js/admin.js"></script>
+</body>
+</html>
