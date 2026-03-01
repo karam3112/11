@@ -1,14 +1,14 @@
 {
-  "mosqueName": "مسجد الصراط",
-  "mosqueSubName": "تأسس سنة 2000",
+  "mosqueName": "مسجد النور",
+  "mosqueSubName": "جامع النور الإسلامي",
   "city": "باقة الغربية",
   "adjustments": {
-    "fajr": 1,
-    "sunrise": 1,
-    "dhuhr": 1,
-    "asr": 1,
-    "maghrib": 1,
-    "isha": 1
+    "fajr": 0,
+    "sunrise": 0,
+    "dhuhr": 0,
+    "asr": 0,
+    "maghrib": 0,
+    "isha": 0
   },
   "iqama": {
     "fajr": 20,
@@ -19,11 +19,12 @@
   },
   "nightMode": {
     "enabled": true,
-    "delayMinutes": 30
+    "delayMinutes": 30,
+    "endBeforeMinutes": 15
   },
   "ticker": {
     "enabled": true,
-    "text": "أهلاً وسهلاً بكم في مسجد الصراط • صلاة الجمعة في تمام الساعة 12:00ظهراً • رحبوا بالإخوة الزوار"
+    "text": "أهلاً وسهلاً بكم في مسجد النور • صلاة الجمعة في تمام الساعة الثانية عشرة ظهراً • رحبوا بالإخوة الزوار"
   },
   "footerText": {
     "right": "اللهم صل وسلم على نبينا محمد ﷺ",
@@ -32,5 +33,5 @@
   },
   "antiBurn": true,
   "showWeather": true,
-  "lastUpdated": "2026-03-01T22:16:15.582Z"
+  "lastUpdated": ""
 }
