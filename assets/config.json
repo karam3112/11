@@ -1,1 +1,36 @@
-
+{
+  "mosqueName": "مسجد النور",
+  "mosqueSubName": "جامع النور الإسلامي",
+  "city": "باقة الغربية",
+  "adjustments": {
+    "fajr": 0,
+    "sunrise": 0,
+    "dhuhr": 0,
+    "asr": 0,
+    "maghrib": 0,
+    "isha": 0
+  },
+  "iqama": {
+    "fajr": 20,
+    "dhuhr": 15,
+    "asr": 15,
+    "maghrib": 5,
+    "isha": 15
+  },
+  "nightMode": {
+    "enabled": true,
+    "delayMinutes": 30
+  },
+  "ticker": {
+    "enabled": true,
+    "text": "أهلاً وسهلاً بكم في مسجد النور • صلاة الجمعة في تمام الساعة الثانية عشرة ظهراً • رحبوا بالإخوة الزوار"
+  },
+  "footerText": {
+    "right": "اللهم صل وسلم على نبينا محمد ﷺ",
+    "center": "السلام عليكم ورحمة الله وبركاته",
+    "left": "حفظكم الله ورعاكم"
+  },
+  "antiBurn": true,
+  "showWeather": true,
+  "lastUpdated": ""
+}
