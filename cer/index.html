@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>محرر شهادات مدرسة الغزالي</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Tajawal:wght@300;400;500;700;800&family=Scheherazade+New:wght@400;700&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+<!-- HEADER BAR -->
+<header class="app-header">
+  <div class="app-header-inner">
+    <div class="app-logo-area">
+      <div class="app-school-emblem" id="headerEmblem">غ</div>
+      <div>
+        <div class="app-school-name">مدرسة الغزالي</div>
+        <div class="app-school-tagline">محرّك إصدار الشهادات الرسمي</div>
+      </div>
+    </div>
+    <div class="app-header-actions">
+      <button class="btn-header-action" onclick="printCertificate()">🖨️ طباعة</button>
+    </div>
+  </div>
+</header>
+
+<main class="workspace">
+
+  <!-- PANEL: INPUT -->
+  <section class="panel-input" id="inputPanel">
+    <div class="panel-title">
+      <span class="panel-icon">✏️</span>
+      بيانات الشهادة
+    </div>
+
+    <!-- LOGO UPLOAD -->
+    <div class="form-group logo-group">
+      <label>شعار المدرسة</label>
+      <div class="logo-upload-area" id="logoUploadArea" onclick="document.getElementById('logoInput').click()">
+        <div class="logo-preview-wrap" id="logoPreviewWrap">
+          <div class="logo-placeholder" id="logoPlaceholder">
+            <span class="logo-placeholder-icon">🏫</span>
+            <span>انقر لرفع الشعار</span>
+            <span class="logo-sub">PNG أو SVG أو JPG</span>
+          </div>
+          <img id="logoPreviewImg" src="" alt="شعار المدرسة" style="display:none" />
+        </div>
+        <input type="file" id="logoInput" accept="image/*" style="display:none" onchange="handleLogoUpload(event)" />
+      </div>
+      <button class="btn-remove-logo" id="btnRemoveLogo" onclick="removeLogo()" style="display:none">✕ إزالة الشعار</button>
+    </div>
+
+    <!-- TEMPLATE SELECTOR -->
+    <div class="form-group">
+      <label>نوع الشهادة</label>
+      <div class="template-grid" id="templateGrid">
+        <div class="tpl-card active" data-tpl="appreciation" onclick="selectTemplate(this, 'appreciation')">
+          <span class="tpl-icon">🏅</span>
+          <span>شهادة تقدير</span>
+        </div>
+        <div class="tpl-card" data-tpl="academic" onclick="selectTemplate(this, 'academic')">
+          <span class="tpl-icon">📚</span>
+          <span>إنجاز أكاديمي</span>
+        </div>
+        <div class="tpl-card" data-tpl="encouragement" onclick="selectTemplate(this, 'encouragement')">
+          <span class="tpl-icon">⭐</span>
+          <span>شهادة تشجيع</span>
+        </div>
+        <div class="tpl-card" data-tpl="occasion" onclick="selectTemplate(this, 'occasion')">
+          <span class="tpl-icon">🎉</span>
+          <span>شهادة مناسبة</span>
+        </div>
+        <div class="tpl-card" data-tpl="thanks" onclick="selectTemplate(this, 'thanks')">
+          <span class="tpl-icon">🤝</span>
+          <span>شهادة شكر</span>
+        </div>
+        <div class="tpl-card" data-tpl="teacher" onclick="selectTemplate(this, 'teacher')">
+          <span class="tpl-icon">👩‍🏫</span>
+          <span>تقدير معلم/ة</span>
+        </div>
+        <div class="tpl-card" data-tpl="honor" onclick="selectTemplate(this, 'honor')">
+          <span class="tpl-icon">🎖️</span>
+          <span>شهادة فخرية</span>
+        </div>
+        <div class="tpl-card" data-tpl="medal" onclick="selectTemplate(this, 'medal')">
+          <span class="tpl-icon">🏆</span>
+          <span>وسام الغزالي</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- FIELDS -->
+    <div class="form-group">
+      <label for="fldName">اسم الطالب / المكرَّم <span class="req">*</span></label>
+      <input id="fldName" type="text" placeholder="أدخل الاسم الكامل" oninput="updatePreview()" />
+    </div>
+
+    <div class="form-group">
+      <label for="fldTitle">عنوان الشهادة</label>
+      <input id="fldTitle" type="text" placeholder="مثال: شهادة تقدير واعتزاز" oninput="updatePreview()" />
+    </div>
+
+    <div class="form-group">
+      <label for="fldIntro">النص التمهيدي</label>
+      <input id="fldIntro" type="text" placeholder="مثال: تمنح هذه الشهادة للطالب المتميز" oninput="updatePreview()" />
+    </div>
+
+    <div class="form-group">
+      <label for="fldHighlight">سطر الإبراز القصير</label>
+      <input id="fldHighlight" type="text" placeholder="مثال: لتفوقه وتميزه المستمر" oninput="updatePreview()" />
+    </div>
+
+    <div class="form-group">
+      <label for="fldQualities">الصفات <span class="hint">(افصل بفاصلة)</span></label>
+      <input id="fldQualities" type="text" placeholder="مثال: المجتهد, المتميز, القدوة" oninput="updatePreview()" />
+    </div>
+
+    <div class="form-group">
+      <label for="fldBody">نص الشهادة</label>
+      <textarea id="fldBody" rows="3" placeholder="أدخل نص الشهادة التفصيلي هنا..." oninput="updatePreview()"></textarea>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="fldSigner">اسم الموقِّع</label>
+        <input id="fldSigner" type="text" placeholder="اسم المدير / المشرف" oninput="updatePreview()" />
+      </div>
+      <div class="form-group">
+        <label for="fldSignerTitle">صفة الموقِّع</label>
+        <input id="fldSignerTitle" type="text" placeholder="مثال: مدير المدرسة" oninput="updatePreview()" />
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="fldDate">التاريخ</label>
+        <input id="fldDate" type="text" placeholder="مثال: ١٤٤٦/٠٦/١٢ هـ" oninput="updatePreview()" />
+      </div>
+      <div class="form-group">
+        <label for="fldSchool">اسم المدرسة</label>
+        <input id="fldSchool" type="text" placeholder="مدرسة الغزالي" oninput="updatePreview()" />
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="fldTagline">السطر التعريفي للمدرسة</label>
+      <input id="fldTagline" type="text" placeholder="مثال: نحو مستقبل مشرق بالعلم والقيم" oninput="updatePreview()" />
+    </div>
+
+    <!-- ACTIONS -->
+    <div class="action-buttons">
+      <button class="btn-action btn-png" onclick="downloadPNG()">
+        <span>⬇️</span> تحميل PNG
+      </button>
+      <button class="btn-action btn-pdf" onclick="downloadPDF()">
+        <span>📄</span> تصدير PDF
+      </button>
+    </div>
+
+  </section>
+
+  <!-- PANEL: PREVIEW -->
+  <section class="panel-preview">
+    <div class="panel-title">
+      <span class="panel-icon">👁️</span>
+      معاينة الشهادة
+      <span class="preview-badge">مباشر</span>
+    </div>
+    <div class="preview-wrap">
+      <div class="preview-scaler" id="previewScaler">
+        <div class="certificate" id="certificate">
+          <!-- rendered by JS -->
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
