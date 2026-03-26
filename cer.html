@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>تصميم شهادات الغزالي</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&family=Tajawal:wght@400;500&display=swap" rel="stylesheet">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<style>
+body {
+  font-family: 'Tajawal', sans-serif;
+  margin:0;
+  background:#f7f7f7;
+}
+
+.container {
+  display:flex;
+  height:100vh;
+}
+
+.controls {
+  width:320px;
+  background:white;
+  padding:15px;
+  overflow:auto;
+  border-left:1px solid #ddd;
+}
+
+.controls input, .controls textarea, .controls select {
+  width:100%;
+  margin-bottom:10px;
+  padding:8px;
+  border:1px solid #ccc;
+  border-radius:6px;
+}
+
+.preview {
+  flex:1;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.certificate {
+  width:800px;
+  height:560px;
+  background:white;
+  padding:40px;
+  position:relative;
+  box-shadow:0 0 20px rgba(0,0,0,0.1);
+}
+
+/* هوية الغزالي */
+.primary { color:#1F7A63; }
+.gold { color:#D4AF37; }
+
+/* العنوان */
+.title {
+  font-family:'Cairo';
+  font-size:28px;
+  text-align:center;
+}
+
+/* الاسم */
+.name {
+  font-family:'Cairo';
+  font-size:40px;
+  text-align:center;
+  margin:20px 0;
+}
+
+/* النص */
+.text {
+  text-align:center;
+  font-size:18px;
+}
+
+/* الصفات */
+.traits span {
+  background:#4CAF7A;
+  color:white;
+  padding:5px 10px;
+  margin:3px;
+  border-radius:15px;
+  display:inline-block;
+}
+
+/* التوقيع */
+.footer {
+  position:absolute;
+  bottom:30px;
+  width:90%;
+  display:flex;
+  justify-content:space-between;
+}
+
+button {
+  width:100%;
+  padding:10px;
+  margin-top:10px;
+  background:#1F7A63;
+  color:white;
+  border:none;
+  border-radius:6px;
+  cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<!-- التحكم -->
+<div class="controls">
+<h3>📜 تصميم الشهادة</h3>
+
+<select id="template">
+<option value="formal">رسمية</option>
+<option value="academic">إنجاز أكاديمي</option>
+<option value="kids">تشجيع</option>
+<option value="season">مناسبة</option>
+<option value="thanks">شكر</option>
+<option value="teacher">معلم</option>
+<option value="honor">فخرية</option>
+<option value="medal">وسام الغزالي</option>
+</select>
+
+<input id="name" placeholder="اسم الطالب">
+<input id="title" placeholder="عنوان الشهادة">
+<textarea id="reason" placeholder="سبب التكريم"></textarea>
+<input id="traits" placeholder="صفات (افصل بفاصلة)">
+<textarea id="message" placeholder="نص التهنئة"></textarea>
+<input id="sign" placeholder="اسم الموقّع">
+
+<button onclick="downloadPNG()">تحميل PNG</button>
+<button onclick="downloadPDF()">تحميل PDF</button>
+
+</div>
+
+<!-- المعاينة -->
+<div class="preview">
+<div id="cert" class="certificate">
+
+<div class="title primary" id="p_title">شهادة تقدير</div>
+
+<div class="name gold" id="p_name">اسم الطالب</div>
+
+<div class="text" id="p_reason">وذلك تقديرًا لجهوده المميزة</div>
+
+<div class="traits text" id="p_traits"></div>
+
+<div class="text" id="p_message">مع أطيب التمنيات بالتوفيق</div>
+
+<div class="footer">
+<div id="p_sign">الإدارة</div>
+<div id="date"></div>
+</div>
+
+</div>
+</div>
+
+</div>
+
+<script>
+const inputs = document.querySelectorAll("input, textarea, select");
+
+inputs.forEach(i => i.addEventListener("input", update));
+
+function update(){
+  document.getElementById("p_name").innerText = name.value || "اسم الطالب";
+  document.getElementById("p_title").innerText = title.value || "شهادة تقدير";
+  document.getElementById("p_reason").innerText = reason.value;
+  document.getElementById("p_message").innerText = message.value;
+  document.getElementById("p_sign").innerText = sign.value || "الإدارة";
+
+  // الصفات
+  let t = traits.value.split(",");
+  document.getElementById("p_traits").innerHTML = t.map(x=>`<span>${x}</span>`).join("");
+
+  // التاريخ
+  document.getElementById("date").innerText = new Date().toLocaleDateString("ar");
+
+  applyTemplate();
+}
+
+function applyTemplate(){
+  let t = template.value;
+
+  let cert = document.getElementById("cert");
+
+  cert.style.border = "none";
+
+  if(t=="formal"){
+    cert.style.border="4px solid #1F7A63";
+  }
+  if(t=="medal"){
+    cert.style.border="6px solid #D4AF37";
+  }
+}
+
+function downloadPNG(){
+  html2canvas(cert).then(canvas=>{
+    let a=document.createElement("a");
+    a.href=canvas.toDataURL();
+    a.download="certificate.png";
+    a.click();
+  });
+}
+
+function downloadPDF(){
+  html2canvas(cert).then(canvas=>{
+    const { jsPDF } = window.jspdf;
+    let pdf = new jsPDF();
+    pdf.addImage(canvas.toDataURL("image/png"),"PNG",10,10,190,120);
+    pdf.save("certificate.pdf");
+  });
+}
+
+update();
+</script>
+
+</body>
+</html>
