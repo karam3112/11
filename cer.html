@@ -10,7 +10,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;800;900&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf.umd.min.js/2.5.1/jspdf.umd.min.js"></script>
 
   <style>
     :root{
@@ -23,10 +23,14 @@
       --support-gray:#BDBDBD;
       --page:#f4f6f5;
       --shadow:0 18px 50px rgba(0,0,0,.12);
-      --radius:20px;
     }
 
     *{box-sizing:border-box}
+
+    html, body {
+      direction: rtl;
+    }
+
     body{
       margin:0;
       font-family:'Tajawal',sans-serif;
@@ -35,12 +39,14 @@
         radial-gradient(circle at bottom left, rgba(212,175,55,.08), transparent 22%),
         var(--page);
       color:var(--text);
+      text-align:right;
     }
 
     .app{
       min-height:100vh;
       display:grid;
       grid-template-columns:360px 1fr;
+      direction: rtl;
     }
 
     .sidebar{
@@ -93,6 +99,8 @@
       outline:none;
       background:#fff;
       transition:.2s ease;
+      direction: rtl;
+      text-align: right;
     }
 
     .field input:focus,
@@ -151,6 +159,7 @@
       justify-content:space-between;
       margin-bottom:14px;
       gap:12px;
+      direction: rtl;
     }
 
     .preview-top h2{
@@ -171,7 +180,6 @@
       align-items:flex-start;
     }
 
-    /* A4 Landscape proportion قريب من كودك السابق */
     .certificate{
       width:1123px;
       height:794px;
@@ -181,9 +189,9 @@
       box-shadow:var(--shadow);
       border-radius:10px;
       transform-origin:top center;
+      direction: rtl;
     }
 
-    /* ---------- الهيكل الرسمي ---------- */
     .header{
       position:absolute;
       top:0;
@@ -196,6 +204,7 @@
       align-items:center;
       justify-content:space-between;
       z-index:4;
+      direction: rtl;
     }
 
     .logo-wrap{
@@ -215,7 +224,7 @@
     }
 
     .school-block{
-      text-align:left;
+      text-align:right;
       flex:1;
       padding-inline:18px;
     }
@@ -247,12 +256,13 @@
       border-radius:999px;
     }
 
+    /* تم تصغير مساحة المحتوى ورفع الفوتر لمنع القص */
     .content{
       position:absolute;
-      top:145px;
-      right:48px;
-      left:48px;
-      bottom:90px;
+      top:152px;
+      right:60px;
+      left:60px;
+      bottom:125px;
       display:flex;
       flex-direction:column;
       align-items:center;
@@ -265,14 +275,15 @@
       position:absolute;
       right:42px;
       left:42px;
-      bottom:26px;
-      height:52px;
+      bottom:34px;
+      height:56px;
       display:flex;
       align-items:flex-end;
       justify-content:space-between;
       font-size:.95rem;
       color:#59615c;
       z-index:4;
+      direction: rtl;
     }
 
     .footer .signature-title{
@@ -289,7 +300,6 @@
       font-size:1rem;
     }
 
-    /* ---------- محتوى الشهادة ---------- */
     .kicker{
       display:inline-block;
       padding:8px 18px;
@@ -298,18 +308,18 @@
       color:var(--primary);
       font-weight:800;
       font-size:1.05rem;
-      margin-top:8px;
-      margin-bottom:16px;
+      margin-top:6px;
+      margin-bottom:14px;
       border:1px solid rgba(31,122,99,.10);
     }
 
     .title{
       font-family:'Cairo',sans-serif;
-      font-size:3rem;
+      font-size:2.8rem;
       font-weight:900;
       color:var(--primary);
       line-height:1.2;
-      margin:0 0 18px;
+      margin:0 0 14px;
       letter-spacing:.2px;
     }
 
@@ -318,59 +328,73 @@
       height:5px;
       border-radius:999px;
       background:linear-gradient(90deg, rgba(212,175,55,.25), var(--accent), rgba(212,175,55,.25));
-      margin:0 auto 22px;
+      margin:0 auto 18px;
     }
 
     .reason{
-      font-size:1.45rem;
+      font-size:1.28rem;
       color:#5b605e;
-      margin:0 0 12px;
-      line-height:1.8;
-      max-width:86%;
+      margin:0 0 10px;
+      line-height:1.75;
+      max-width:82%;
       font-weight:500;
     }
 
     .student-name{
       font-family:'Cairo',sans-serif;
       color:#1c4d40;
-      line-height:1.18;
-      margin:0 0 16px;
+      line-height:1.15;
+      margin:0 0 14px;
       font-weight:900;
-      max-width:86%;
+      max-width:80%;
       word-break:break-word;
     }
 
-    .name-1{font-size:4.2rem}
-    .name-2{font-size:3.6rem}
-    .name-3{font-size:3rem}
-    .name-4{font-size:2.4rem}
+    /* ضبط أهدأ لأحجام الاسم */
+    .name-1{font-size:3.7rem}
+    .name-2{font-size:3.15rem}
+    .name-3{font-size:2.55rem}
+    .name-4{font-size:2.1rem}
 
     .highlight{
       display:inline-block;
-      margin:6px auto 18px;
+      margin:4px auto 16px;
       padding:10px 20px;
       border-radius:14px;
       background:rgba(230,211,163,.28);
       color:#775c1b;
-      font-size:1.16rem;
+      font-size:1.08rem;
       font-weight:700;
-      max-width:80%;
-      line-height:1.8;
+      max-width:76%;
+      line-height:1.7;
     }
 
     .message{
-      max-width:78%;
-      font-size:1.42rem;
-      line-height:1.95;
+      max-width:74%;
+      font-size:1.24rem;
+      line-height:1.82;
       color:#363a38;
-      margin:4px auto 0;
+      margin:2px auto 0;
       white-space:pre-line;
+      overflow-wrap:anywhere;
+    }
+
+    .message.message-long{
+      font-size:1.1rem;
+      line-height:1.72;
+      max-width:78%;
+    }
+
+    .message.message-xlong{
+      font-size:1rem;
+      line-height:1.62;
+      max-width:80%;
     }
 
     .traits{
-      margin-top:18px;
-      margin-bottom:12px;
-      max-width:82%;
+      margin-top:14px;
+      margin-bottom:10px;
+      max-width:78%;
       display:flex;
       flex-wrap:wrap;
       gap:10px;
@@ -378,16 +402,15 @@
     }
 
     .trait{
-      padding:9px 16px;
+      padding:8px 15px;
       border-radius:999px;
       background:rgba(76,175,122,.11);
       border:1px solid rgba(76,175,122,.20);
       color:#24684a;
       font-weight:700;
-      font-size:1rem;
+      font-size:.98rem;
     }
 
-    /* ---------- عناصر زخرفية عامة ---------- */
     .ornament{
       position:absolute;
       pointer-events:none;
@@ -434,7 +457,6 @@
       border-left:3px solid var(--accent);
     }
 
-    /* ---------- القوالب ---------- */
     .tpl-formal{
       background:
         radial-gradient(circle at top left, rgba(31,122,99,.05), transparent 24%),
@@ -442,26 +464,10 @@
         #fff;
     }
 
-    .tpl-formal .title{
-      color:var(--primary);
-    }
-
-    .tpl-formal .student-name{
-      color:#16493c;
-    }
-
-    .tpl-formal .reason{
-      font-size:1.36rem;
-    }
-
     .tpl-academic{
       background:
         linear-gradient(180deg, rgba(31,122,99,.04), transparent 22%),
         #fff;
-    }
-
-    .tpl-academic .title{
-      color:#155a49;
     }
 
     .tpl-academic .title-accent{
@@ -503,18 +509,8 @@
         #fff;
     }
 
-    .tpl-season .title{
-      color:#206f5d;
-    }
-
     .tpl-season .message{
-      max-width:75%;
-    }
-
-    .tpl-thanks .title,
-    .tpl-teacher .title,
-    .tpl-honor .title{
-      color:#1b644f;
+      max-width:72%;
     }
 
     .tpl-thanks{
@@ -536,58 +532,97 @@
         #fff;
     }
 
+    /* رفع فخامة الوسام */
     .tpl-medal{
       background:
-        linear-gradient(180deg, rgba(212,175,55,.09), rgba(255,255,255,.0) 22%),
-        radial-gradient(circle at center, rgba(212,175,55,.05), transparent 35%),
+        linear-gradient(180deg, rgba(212,175,55,.11), rgba(255,255,255,0) 24%),
+        radial-gradient(circle at 50% 24%, rgba(212,175,55,.08), transparent 26%),
+        radial-gradient(circle at center, rgba(212,175,55,.04), transparent 38%),
         #fff;
     }
 
     .tpl-medal .grid-frame{
-      border:2px solid rgba(212,175,55,.28);
+      border:2px solid rgba(212,175,55,.30);
+      box-shadow: inset 0 0 0 1px rgba(212,175,55,.08);
     }
 
     .tpl-medal .title{
       color:#8a6a18;
-      font-size:3.25rem;
+      font-size:3.1rem;
+      letter-spacing:.3px;
+      margin-bottom:18px;
+    }
+
+    .tpl-medal .title-accent{
+      width:210px;
+      height:6px;
+      margin-bottom:22px;
+      background:linear-gradient(90deg, rgba(212,175,55,.18), #d4af37, rgba(212,175,55,.18));
     }
 
     .tpl-medal .student-name{
       color:#17483b;
+      margin-bottom:18px;
     }
 
     .tpl-medal .highlight{
-      background:rgba(212,175,55,.13);
+      background:rgba(212,175,55,.14);
       color:#7a5e18;
       border:1px solid rgba(212,175,55,.24);
+      margin-bottom:20px;
+    }
+
+    .tpl-medal .kicker{
+      background:rgba(212,175,55,.14);
+      color:#846417;
+      border:1px solid rgba(212,175,55,.24);
+      font-size:1rem;
+      margin-bottom:12px;
+    }
+
+    .tpl-medal .trait{
+      background:rgba(212,175,55,.11);
+      border-color:rgba(212,175,55,.22);
+      color:#6d5313;
+    }
+
+    .tpl-medal .message{
+      max-width:70%;
+      font-size:1.18rem;
+      line-height:1.76;
     }
 
     .medal-badge{
-      width:92px;
-      height:92px;
+      width:110px;
+      height:110px;
       border-radius:50%;
       background:
-        radial-gradient(circle at 30% 30%, #f7e7a9, #d4af37 60%, #b88e1f 100%);
+        radial-gradient(circle at 30% 30%, #f8ebbb, #d4af37 58%, #b88e1f 100%);
       box-shadow:
-        inset 0 2px 8px rgba(255,255,255,.35),
-        0 10px 24px rgba(212,175,55,.22);
+        inset 0 2px 10px rgba(255,255,255,.38),
+        0 14px 28px rgba(212,175,55,.26);
       display:none;
       align-items:center;
       justify-content:center;
       font-family:'Cairo',sans-serif;
-      font-size:1.1rem;
+      font-size:1.22rem;
       color:#fff;
       font-weight:900;
-      margin-bottom:18px;
-      border:3px solid rgba(255,255,255,.75);
+      margin-bottom:20px;
+      border:4px solid rgba(255,255,255,.78);
+      position: relative;
+    }
+
+    .medal-badge::after{
+      content:"";
+      position:absolute;
+      inset:-10px;
+      border-radius:50%;
+      border:2px dashed rgba(212,175,55,.45);
     }
 
     .tpl-medal .medal-badge{
       display:flex;
-    }
-
-    .muted{
-      color:#68716b;
     }
 
     @media (max-width:1200px){
@@ -603,7 +638,7 @@
     <aside class="sidebar">
       <div class="brandbox">
         <h1>📜 تصميم شهادات الغزالي</h1>
-        <p>اكتب المحتوى فقط، والشكل يلتزم بالهوية تلقائيًا.</p>
+        <p>اكتب المحتوى فقط، والتصميم يُرتّب نفسه تلقائيًا.</p>
       </div>
 
       <div class="field">
@@ -846,10 +881,17 @@
     function nameSizeClass(name) {
       const clean = (name || '').trim();
       const len = clean.length;
-      if (len <= 13) return 'name-1';
-      if (len <= 22) return 'name-2';
-      if (len <= 32) return 'name-3';
+      if (len <= 11) return 'name-1';
+      if (len <= 18) return 'name-2';
+      if (len <= 28) return 'name-3';
       return 'name-4';
+    }
+
+    function messageSizeClass(msg) {
+      const len = (msg || '').trim().length;
+      if (len > 240) return 'message-xlong';
+      if (len > 160) return 'message-long';
+      return '';
     }
 
     function renderTraits(input) {
@@ -922,6 +964,10 @@
       els.previewName.classList.remove('name-1','name-2','name-3','name-4');
       els.previewName.classList.add(nameSizeClass(name));
 
+      els.previewMessage.classList.remove('message-long','message-xlong');
+      const msgClass = messageSizeClass(message);
+      if (msgClass) els.previewMessage.classList.add(msgClass);
+
       els.medalBadge.textContent = currentTpl === 'medal' ? 'وسام' : '';
       els.previewTraits.style.display = els.previewTraits.innerHTML ? 'flex' : 'none';
       els.previewHighlight.style.display = highlight ? 'inline-block' : 'none';
@@ -971,7 +1017,6 @@
       els.schoolNameInput, els.taglineInput
     ].forEach(el => el.addEventListener('input', updatePreview));
 
-    // بداية جاهزة
     els.dateInput.value = autoDateArabic();
     setTemplateDefaults('formal', true);
     els.traits.value = 'مبدع، مجتهد، متألق';
