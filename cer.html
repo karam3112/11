@@ -986,41 +986,27 @@
       link.click();
     }
 
-    async function downloadPDF() {
-      const cert = document.getElementById('certificate');
-      const canvas = await html2canvas(cert, {
-        scale: 2,
-        useCORS: true,
-        backgroundColor: '#ffffff'
-      });
+async function downloadPDF() {
+  const cert = document.getElementById('certificate');
 
-      const { jsPDF } = window.jspdf;
-      const pdf = new jsPDF({
-        orientation: 'landscape',
-        unit: 'px',
-        format: [1123, 794]
-      });
+  const canvas = await html2canvas(cert, {
+    scale: 2,
+    useCORS: true,
+    backgroundColor: '#ffffff'
+  });
 
-      const imgData = canvas.toDataURL('image/png');
-      pdf.addImage(imgData, 'PNG', 0, 0, 1123, 794);
-      pdf.save('ghazali-certificate.pdf');
-    }
+  const imgData = canvas.toDataURL('image/png');
 
-    els.template.addEventListener('change', () => {
-      setTemplateDefaults(els.template.value, true);
-      updatePreview();
-    });
+  const { jsPDF } = window.jspdf;
+  const pdf = new jsPDF({
+    orientation: 'landscape',
+    unit: 'px',
+    format: [1123, 794]
+  });
 
-    [
-      els.studentName, els.title, els.reason, els.highlight, els.traits,
-      els.message, els.signer, els.signerTitle, els.dateInput,
-      els.schoolNameInput, els.taglineInput
-    ].forEach(el => el.addEventListener('input', updatePreview));
-
-    els.dateInput.value = autoDateArabic();
-    setTemplateDefaults('formal', true);
-    els.traits.value = 'مبدع، مجتهد، متألق';
-    updatePreview();
-  </script>
+  pdf.addImage(imgData, 'PNG', 0, 0, 1123, 794);
+  pdf.save('ghazali-certificate.pdf');
+}
+</script>
 </body>
 </html>
